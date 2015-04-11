@@ -3,7 +3,7 @@
  * Plugin Name: Naked Social Share
  * Plugin URI: https://creativewhim.com/shop/naked-social-share/
  * Description: Simple, unstyled social share icons for theme designers.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Ashley
  * Author URI: https://www.nosegraze.com
  * License: GPL2
@@ -38,7 +38,7 @@ include_once plugin_dir_path( __FILE__ ) . 'class-naked-social-share.php';
  * @return Naked_Social_Share
  */
 function Naked_Social_Share() {
-	$instance = Naked_Social_Share::instance( __FILE__, '1.0.0' );
+	$instance = Naked_Social_Share::instance( __FILE__, '1.0.1' );
 
 	return $instance;
 }

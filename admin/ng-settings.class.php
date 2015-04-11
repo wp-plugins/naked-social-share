@@ -507,7 +507,6 @@ class Nose_Graze_Settings {
 		// This ensures things like multicheck boxes work when they're all empty.
 		if ( ! empty( $settings[ $tab ]['fields'] ) ) {
 			foreach ( $settings[ $tab ]['fields'] as $key => $value ) {
-				var_dump($input[$key]);var_dump($options[$key]);
 				if ( empty( $input[ $key ] ) || ! isset( $input[ $key ] ) ) {
 					$input[$key] = false;
 				}
