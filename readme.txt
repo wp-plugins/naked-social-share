@@ -50,6 +50,9 @@ The share counters are cached for 3 hours to improve loading times and to avoid 
 
 == Changelog ==
 
+= 1.0.1 =
+* Removed some debugging code that was left behind.
+
 = 1.0.0 =
 * Initial release.
 
