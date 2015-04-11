@@ -50,6 +50,9 @@ The share counters are cached for 3 hours to improve loading times and to avoid 
 
 == Changelog ==
 
+= 1.0.2 =
+* Replaced `urlencode` functions with `esc_url_raw`, as urlencode was preventing the social share requests from working properly.
+
 = 1.0.1 =
 * Removed some debugging code that was left behind.
 

@@ -154,7 +154,7 @@ class Naked_Social_Share_Buttons {
 		 * Fetch the share numbers for Twitter.
 		 */
 		$twitter_url      = 'http://urls.api.twitter.com/1/urls/count.json?url=' . $this->url;
-		$twitter_response = wp_remote_get( urlencode( $twitter_url ) );
+		$twitter_response = wp_remote_get( esc_url_raw( $twitter_url ) );
 		// Make sure the response came back okay.
 		if ( ! is_wp_error( $twitter_response ) && wp_remote_retrieve_response_code( $twitter_response ) == 200 ) {
 			$twitter_body = json_decode( wp_remote_retrieve_body( $twitter_response ) );
@@ -169,7 +169,7 @@ class Naked_Social_Share_Buttons {
 		 * Fetch the share numbers for Facebook.
 		 */
 		$params            = 'select total_count, comment_count, share_count, like_count from link_stat where url = "' . $this->url . '"';
-		$facebook_url      = urlencode( 'http://graph.facebook.com/fql?q=' . urlencode( $params ) );
+		$facebook_url      = esc_url_raw( 'http://graph.facebook.com/fql?q=' . $params );
 		$facebook_response = wp_remote_get( $facebook_url );
 		// Make sure the response came back okay.
 		if ( ! is_wp_error( $facebook_response ) && wp_remote_retrieve_response_code( $facebook_response ) == 200 ) {
@@ -185,7 +185,7 @@ class Naked_Social_Share_Buttons {
 		 * Fetch the share numbers for Pinterest.
 		 */
 		$pinterest_url      = 'http://api.pinterest.com/v1/urls/count.json?callback=receiveCount&url=' . $this->url;
-		$pinterest_response = wp_remote_get( urlencode( $pinterest_url ) );
+		$pinterest_response = wp_remote_get( esc_url_raw( $pinterest_url ) );
 		// Make sure the response came back okay.
 		if ( ! is_wp_error( $pinterest_response ) && wp_remote_retrieve_response_code( $pinterest_response ) == 200 ) {
 			// Remove the annoying repsonseCode() stuff
@@ -200,7 +200,7 @@ class Naked_Social_Share_Buttons {
 		 * Fetch the share numbers for StumbleUpon.
 		 */
 		$stumble_url      = 'http://www.stumbleupon.com/services/1.01/badge.getinfo?url=' . $this->url;
-		$stumble_response = wp_remote_get( urlencode( $stumble_url ) );
+		$stumble_response = wp_remote_get( esc_url_raw( $stumble_url ) );
 		// Make sure the response came back okay.
 		if ( ! is_wp_error( $stumble_response ) && wp_remote_retrieve_response_code( $stumble_response ) == 200 ) {
 			$stumble_body = json_decode( wp_remote_retrieve_body( $stumble_response ) );
