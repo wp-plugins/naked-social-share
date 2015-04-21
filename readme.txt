@@ -3,7 +3,7 @@ Contributors: NoseGraze
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L2TL7ZBVUMG9C
 Tags: social, twitter, facebook, pinterest, stumbleupon, social share
 Requires at least: 3.0
-Tested up to: 4.1.1
+Tested up to: 4.2
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -50,6 +50,11 @@ The share counters are cached for 3 hours to improve loading times and to avoid 
 
 == Changelog ==
 
+= 1.0.3 =
+* Fixed an undefined property notice when the post is not submitted to StumbleUpon.
+* Added class names to each social button's `li` tag in case you want to style them differently.
+* Tested with WordPress 4.2.
+
 = 1.0.2 =
 * Replaced `urlencode` functions with `esc_url_raw`, as urlencode was preventing the social share requests from working properly.
 
@@ -60,3 +65,6 @@ The share counters are cached for 3 hours to improve loading times and to avoid 
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.0.3 =
+Tested with WordPress 4.2 and also some minor code fixes/enhancements.

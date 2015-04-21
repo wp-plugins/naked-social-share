@@ -204,7 +204,7 @@ class Naked_Social_Share_Buttons {
 		// Make sure the response came back okay.
 		if ( ! is_wp_error( $stumble_response ) && wp_remote_retrieve_response_code( $stumble_response ) == 200 ) {
 			$stumble_body = json_decode( wp_remote_retrieve_body( $stumble_response ) );
-			if ( $stumble_body->result && $stumble_body->result->views && is_numeric( $stumble_body->result->views ) ) {
+			if ( $stumble_body->result && method_exists( $stumble_body->result, 'views' ) && $stumble_body->result->views && is_numeric( $stumble_body->result->views ) ) {
 				$shares['stumbleupon'] = $stumble_body->result->views;
 			}
 		}
@@ -271,22 +271,22 @@ class Naked_Social_Share_Buttons {
 		?>
 		<div class="naked-social-share">
 			<ul>
-				<li>
+				<li class="nss-twitter">
 					<a href="http://www.twitter.com/intent/tweet?url=<?php echo urlencode( get_permalink() ) ?><?php echo ( ! empty( $twitter_handle ) ) ? '&via=' . $twitter_handle : ''; ?>&text=<?php echo urlencode( get_the_title() ) ?>" target="_blank"><i class="fa fa-twitter"></i>
 						<?php _e( 'Twitter', 'naked-social-share' ); ?>
 						<span><?php echo $this->share_numbers['twitter']; ?></span></a>
 				</li>
-				<li>
+				<li class="nss-facebook">
 					<a href="http://www.facebook.com/sharer/sharer.php?u=<?php the_permalink(); ?>&t=<?php the_title(); ?>" target="_blank"><i class="fa fa-facebook"></i>
 						<?php _e( 'Facebook', 'naked-social-share' ); ?>
 						<span><?php echo $this->share_numbers['facebook']; ?></span></a>
 				</li>
-				<li>
+				<li class="nss-pinterest">
 					<a href="http://pinterest.com/pin/create/button/?url=<?php the_permalink(); ?>&media=<?php echo $this->get_featured_image_url(); ?>&description=<?php echo urlencode( get_the_title() ); ?>" target="_blank"><i class="fa fa-pinterest"></i>
 						<?php _e( 'Pinterest', 'naked-social-share' ); ?>
 						<span><?php echo $this->share_numbers['pinterest']; ?></span></a>
 				</li>
-				<li>
+				<li class="nss-stumbleupon">
 					<a href="http://www.stumbleupon.com/submit?url=<?php the_permalink(); ?>&title=<?php echo urlencode( get_the_title() ); ?>" target="_blank"><i class="fa fa-stumbleupon"></i>
 						<?php _e( 'StumbleUpon', 'naked-social-share' ); ?>
 						<span><?php echo $this->share_numbers['stumbleupon']; ?></span></a>
