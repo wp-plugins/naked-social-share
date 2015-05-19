@@ -83,6 +83,7 @@ class Naked_Social_Share_Buttons {
 		}
 
 		$this->url           = get_permalink( $this->post );
+		$this->share_numbers = get_post_meta( $this->post->ID, 'naked_shares_count', true );
 		$this->share_numbers = $this->get_share_numbers();
 
 		// Load the settings.
@@ -215,7 +216,7 @@ class Naked_Social_Share_Buttons {
 		);
 
 		// Update the numbers and expiry time in the meta data.
-		update_post_meta( get_the_ID(), 'naked_shares_count', $final_shares );
+		update_post_meta( $this->post->ID, 'naked_shares_count', $final_shares );
 
 		// Update the variable here.
 		$this->share_numbers = $final_shares;

@@ -50,6 +50,9 @@ The share counters are cached for 3 hours to improve loading times and to avoid 
 
 == Changelog ==
 
+= 1.0.4 =
+* Fixed a problem with the caching not working properly.
+
 = 1.0.3 =
 * Fixed an undefined property notice when the post is not submitted to StumbleUpon.
 * Added class names to each social button's `li` tag in case you want to style them differently.
@@ -66,5 +69,5 @@ The share counters are cached for 3 hours to improve loading times and to avoid 
 
 == Upgrade Notice ==
 
-= 1.0.3 =
-Tested with WordPress 4.2 and also some minor code fixes/enhancements.
+= 1.0.4 =
+Fixed a problem with the caching not working properly.
