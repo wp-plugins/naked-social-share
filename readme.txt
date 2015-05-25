@@ -50,6 +50,9 @@ The share counters are cached for 3 hours to improve loading times and to avoid 
 
 == Changelog ==
 
+= 1.0.5 =
+Made some code adjustments to the Naked_Social_Share_Buttons class so you can fetch the buttons for any post object.
+
 = 1.0.4 =
 * Fixed a problem with the caching not working properly.
 
@@ -69,5 +72,5 @@ The share counters are cached for 3 hours to improve loading times and to avoid 
 
 == Upgrade Notice ==
 
-= 1.0.4 =
-Fixed a problem with the caching not working properly.
+= 1.0.5 =
+Made some code adjustments to the Naked_Social_Share_Buttons class so you can fetch the buttons for any post object.

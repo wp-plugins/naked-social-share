@@ -75,9 +75,10 @@ class Naked_Social_Share_Buttons {
 	 * @return void
 	 */
 	public function __construct( $post = null ) {
+		$this->post = $post;
 
 		// If no post object was provided, use the current post.
-		if ( empty( $post ) ) {
+		if ( $this->post == null ) {
 			global $post;
 			$this->post = $post;
 		}
@@ -237,7 +238,7 @@ class Naked_Social_Share_Buttons {
 	public function get_featured_image_url() {
 
 		// Get the featured image if it exists.
-		if ( has_post_thumbnail() ) {
+		if ( has_post_thumbnail( $this->post ) ) {
 			$image = wp_get_attachment_image_src( get_post_thumbnail_id( $this->post->ID ), 'full' );
 
 			return $image[0];
@@ -273,22 +274,22 @@ class Naked_Social_Share_Buttons {
 		<div class="naked-social-share">
 			<ul>
 				<li class="nss-twitter">
-					<a href="http://www.twitter.com/intent/tweet?url=<?php echo urlencode( get_permalink() ) ?><?php echo ( ! empty( $twitter_handle ) ) ? '&via=' . $twitter_handle : ''; ?>&text=<?php echo urlencode( get_the_title() ) ?>" target="_blank"><i class="fa fa-twitter"></i>
+					<a href="http://www.twitter.com/intent/tweet?url=<?php echo urlencode( get_permalink( $this->post ) ) ?><?php echo ( ! empty( $twitter_handle ) ) ? '&via=' . $twitter_handle : ''; ?>&text=<?php echo urlencode( get_the_title( $this->post ) ) ?>" target="_blank"><i class="fa fa-twitter"></i>
 						<?php _e( 'Twitter', 'naked-social-share' ); ?>
 						<span><?php echo $this->share_numbers['twitter']; ?></span></a>
 				</li>
 				<li class="nss-facebook">
-					<a href="http://www.facebook.com/sharer/sharer.php?u=<?php the_permalink(); ?>&t=<?php the_title(); ?>" target="_blank"><i class="fa fa-facebook"></i>
+					<a href="http://www.facebook.com/sharer/sharer.php?u=<?php echo get_permalink( $this->post ); ?>&t=<?php echo get_the_title( $this->post ); ?>" target="_blank"><i class="fa fa-facebook"></i>
 						<?php _e( 'Facebook', 'naked-social-share' ); ?>
 						<span><?php echo $this->share_numbers['facebook']; ?></span></a>
 				</li>
 				<li class="nss-pinterest">
-					<a href="http://pinterest.com/pin/create/button/?url=<?php the_permalink(); ?>&media=<?php echo $this->get_featured_image_url(); ?>&description=<?php echo urlencode( get_the_title() ); ?>" target="_blank"><i class="fa fa-pinterest"></i>
+					<a href="http://pinterest.com/pin/create/button/?url=<?php echo get_permalink( $this->post ); ?>&media=<?php echo $this->get_featured_image_url(); ?>&description=<?php echo urlencode( get_the_title( $this->post ) ); ?>" target="_blank"><i class="fa fa-pinterest"></i>
 						<?php _e( 'Pinterest', 'naked-social-share' ); ?>
 						<span><?php echo $this->share_numbers['pinterest']; ?></span></a>
 				</li>
 				<li class="nss-stumbleupon">
-					<a href="http://www.stumbleupon.com/submit?url=<?php the_permalink(); ?>&title=<?php echo urlencode( get_the_title() ); ?>" target="_blank"><i class="fa fa-stumbleupon"></i>
+					<a href="http://www.stumbleupon.com/submit?url=<?php get_permalink( $this->post ); ?>&title=<?php echo urlencode( get_the_title( $this->post ) ); ?>" target="_blank"><i class="fa fa-stumbleupon"></i>
 						<?php _e( 'StumbleUpon', 'naked-social-share' ); ?>
 						<span><?php echo $this->share_numbers['stumbleupon']; ?></span></a>
 				</li>
