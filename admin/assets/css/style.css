@@ -1,4 +1,7 @@
 /*--------------------------------------------------------------
+x.0 Mixins
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
 x.0 Tab & Content Area Structure
 --------------------------------------------------------------*/
 .ng-settings-buttons {
@@ -62,5 +65,61 @@ x.0 Switch
   border-radius: 0 3px 3px 0; }
   .ng-disable.selected {
     background-color: #646464; }
+
+/*--------------------------------------------------------------
+x.0 Sortable Blocks
+--------------------------------------------------------------*/
+.sorter {
+  clear: both; }
+  .sorter h3 {
+    text-align: center;
+    text-transform: capitalize; }
+  .sorter ul {
+    background: #ffffff;
+    border: 1px solid #f4f4f4;
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05), 0 5px 6px -6px rgba(0, 0, 0, 0.05);
+    float: left;
+    margin: 0 15px 0 0;
+    padding: 10px;
+    width: 250px; }
+    .sorter ul li {
+      background: #f1f1f1;
+      box-sizing: border-box;
+      cursor: move;
+      margin-top: 10px;
+      padding: 5px 10px;
+      position: relative;
+      text-align: center; }
+      .sorter ul li button {
+        background: none;
+        border: none;
+        color: #b6b6b6;
+        cursor: pointer;
+        font-size: 85%;
+        margin-top: 5px;
+        padding: 2px 12px; }
+      .sorter ul li:hover button {
+        background: #2ea2cc;
+        color: white; }
+      .sorter ul li:first-child {
+        margin: 0; }
+      .sorter ul li.placeholder {
+        background: none;
+        border: 1px dashed #fff;
+        height: 54px; }
+      .sorter ul li:before {
+        color: rgba(155, 155, 155, 0.3);
+        content: "\f156";
+        font-family: 'dashicons';
+        position: absolute;
+        top: 0;
+        left: 5px; }
+    .sorter ul#social_sites_disabled {
+      background: #fafafa; }
+      .sorter ul#social_sites_disabled li {
+        background: rgba(155, 155, 155, 0.05); }
+        .sorter ul#social_sites_disabled li.placeholder {
+          border-color: #d0d0d0; }
 
 /*# sourceMappingURL=style.css.map */

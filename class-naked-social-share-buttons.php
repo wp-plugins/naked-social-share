@@ -1,7 +1,7 @@
 <?php
 
 /**
- * class-naked-social-share.php
+ * Handles displaying the buttons and fetching the follower information.
  *
  * @package   naked-social-share
  * @copyright Copyright (c) 2015, Ashley Evans
@@ -83,13 +83,13 @@ class Naked_Social_Share_Buttons {
 			$this->post = $post;
 		}
 
-		$this->url           = get_permalink( $this->post );
-		$this->share_numbers = get_post_meta( $this->post->ID, 'naked_shares_count', true );
-		$this->share_numbers = $this->get_share_numbers();
-
 		// Load the settings.
 		$naked_social_share = Naked_Social_Share();
 		$this->settings     = $naked_social_share->settings;
+
+		$this->url           = get_permalink( $this->post );
+		$this->share_numbers = get_post_meta( $this->post->ID, 'naked_shares_count', true );
+		$this->share_numbers = $this->get_share_numbers();
 	}
 
 	/**
@@ -137,7 +137,8 @@ class Naked_Social_Share_Buttons {
 				'twitter'     => 0,
 				'facebook'    => 0,
 				'pinterest'   => 0,
-				'stumbleupon' => 0
+				'stumbleupon' => 0,
+				'google'      => 0
 			);
 		} else {
 			// If we don't want to cache the numbers, remove the expiry time.
@@ -153,62 +154,87 @@ class Naked_Social_Share_Buttons {
 		}
 
 		/*
-		 * Fetch the share numbers for Twitter.
+		 * Fetch the share numbers for Twitter if it's enabled.
 		 */
-		$twitter_url      = 'http://urls.api.twitter.com/1/urls/count.json?url=' . $this->url;
-		$twitter_response = wp_remote_get( esc_url_raw( $twitter_url ) );
-		// Make sure the response came back okay.
-		if ( ! is_wp_error( $twitter_response ) && wp_remote_retrieve_response_code( $twitter_response ) == 200 ) {
-			$twitter_body = json_decode( wp_remote_retrieve_body( $twitter_response ) );
+		if ( array_key_exists( 'twitter', $this->settings['social_sites']['enabled'] ) ) {
+			$twitter_url      = 'http://urls.api.twitter.com/1/urls/count.json?url=' . $this->url;
+			$twitter_response = wp_remote_get( esc_url_raw( $twitter_url ) );
+			// Make sure the response came back okay.
+			if ( ! is_wp_error( $twitter_response ) && wp_remote_retrieve_response_code( $twitter_response ) == 200 ) {
+				$twitter_body = json_decode( wp_remote_retrieve_body( $twitter_response ) );
 
-			// If the results look okay, update them.
-			if ( $twitter_body->count && is_numeric( $twitter_body->count ) ) {
-				$shares['twitter'] = $twitter_body->count;
+				// If the results look okay, update them.
+				if ( $twitter_body->count && is_numeric( $twitter_body->count ) ) {
+					$shares['twitter'] = $twitter_body->count;
+				}
 			}
+		} else {
+			$shares['twitter'] = 0;
 		}
 
 		/*
-		 * Fetch the share numbers for Facebook.
+		 * Fetch the share numbers for Facebook if it's enabled.
 		 */
-		$params            = 'select total_count, comment_count, share_count, like_count from link_stat where url = "' . $this->url . '"';
-		$facebook_url      = esc_url_raw( 'http://graph.facebook.com/fql?q=' . $params );
-		$facebook_response = wp_remote_get( $facebook_url );
-		// Make sure the response came back okay.
-		if ( ! is_wp_error( $facebook_response ) && wp_remote_retrieve_response_code( $facebook_response ) == 200 ) {
-			$facebook_body = json_decode( wp_remote_retrieve_body( $facebook_response ) );
+		if ( array_key_exists( 'facebook', $this->settings['social_sites']['enabled'] ) ) {
+			$params            = 'select total_count, comment_count, share_count, like_count from link_stat where url = "' . $this->url . '"';
+			$facebook_url      = esc_url_raw( 'http://graph.facebook.com/fql?q=' . $params );
+			$facebook_response = wp_remote_get( $facebook_url );
+			// Make sure the response came back okay.
+			if ( ! is_wp_error( $facebook_response ) && wp_remote_retrieve_response_code( $facebook_response ) == 200 ) {
+				$facebook_body = json_decode( wp_remote_retrieve_body( $facebook_response ) );
 
-			// If the results look good, let's update them.
-			if ( $facebook_body->data && is_array( $facebook_body->data ) && count( $facebook_body->data ) && ( $facebook_body->data[0]->total_count ) ) {
-				$shares['facebook'] = $facebook_body->data[0]->total_count;
+				// If the results look good, let's update them.
+				if ( $facebook_body->data && is_array( $facebook_body->data ) && count( $facebook_body->data ) && ( $facebook_body->data[0]->total_count ) ) {
+					$shares['facebook'] = $facebook_body->data[0]->total_count;
+				}
 			}
+		} else {
+			$shares['facebook'] = 0;
 		}
 
 		/*
-		 * Fetch the share numbers for Pinterest.
+		 * Fetch the share numbers for Pinterest if it's enabled.
 		 */
-		$pinterest_url      = 'http://api.pinterest.com/v1/urls/count.json?callback=receiveCount&url=' . $this->url;
-		$pinterest_response = wp_remote_get( esc_url_raw( $pinterest_url ) );
-		// Make sure the response came back okay.
-		if ( ! is_wp_error( $pinterest_response ) && wp_remote_retrieve_response_code( $pinterest_response ) == 200 ) {
-			// Remove the annoying repsonseCode() stuff
-			$pinterest_body = json_decode( preg_replace( "/[^(]*\((.*)\)/", "$1", wp_remote_retrieve_body( $pinterest_response ) ) );
-			// Get the count
-			if ( $pinterest_body->count && is_numeric( $pinterest_body->count ) ) {
-				$shares['pinterest'] = $pinterest_body->count;
+		if ( array_key_exists( 'pinterest', $this->settings['social_sites']['enabled'] ) ) {
+			$pinterest_url      = 'http://api.pinterest.com/v1/urls/count.json?callback=receiveCount&url=' . $this->url;
+			$pinterest_response = wp_remote_get( esc_url_raw( $pinterest_url ) );
+			// Make sure the response came back okay.
+			if ( ! is_wp_error( $pinterest_response ) && wp_remote_retrieve_response_code( $pinterest_response ) == 200 ) {
+				// Remove the annoying repsonseCode() stuff
+				$pinterest_body = json_decode( preg_replace( "/[^(]*\((.*)\)/", "$1", wp_remote_retrieve_body( $pinterest_response ) ) );
+				// Get the count
+				if ( $pinterest_body->count && is_numeric( $pinterest_body->count ) ) {
+					$shares['pinterest'] = $pinterest_body->count;
+				}
 			}
+		} else {
+			$shares['pinterest'] = 0;
 		}
 
 		/*
-		 * Fetch the share numbers for StumbleUpon.
+		 * Fetch the share numbers for StumbleUpon if it's enabled.
 		 */
-		$stumble_url      = 'http://www.stumbleupon.com/services/1.01/badge.getinfo?url=' . $this->url;
-		$stumble_response = wp_remote_get( esc_url_raw( $stumble_url ) );
-		// Make sure the response came back okay.
-		if ( ! is_wp_error( $stumble_response ) && wp_remote_retrieve_response_code( $stumble_response ) == 200 ) {
-			$stumble_body = json_decode( wp_remote_retrieve_body( $stumble_response ) );
-			if ( $stumble_body->result && method_exists( $stumble_body->result, 'views' ) && $stumble_body->result->views && is_numeric( $stumble_body->result->views ) ) {
-				$shares['stumbleupon'] = $stumble_body->result->views;
+		if ( array_key_exists( 'pinterest', $this->settings['social_sites']['enabled'] ) ) {
+			$stumble_url      = 'http://www.stumbleupon.com/services/1.01/badge.getinfo?url=' . $this->url;
+			$stumble_response = wp_remote_get( esc_url_raw( $stumble_url ) );
+			// Make sure the response came back okay.
+			if ( ! is_wp_error( $stumble_response ) && wp_remote_retrieve_response_code( $stumble_response ) == 200 ) {
+				$stumble_body = json_decode( wp_remote_retrieve_body( $stumble_response ) );
+				if ( $stumble_body->result && method_exists( $stumble_body->result, 'views' ) && $stumble_body->result->views && is_numeric( $stumble_body->result->views ) ) {
+					$shares['stumbleupon'] = $stumble_body->result->views;
+				}
 			}
+		} else {
+			$shares['stumbleupon'] = 0;
+		}
+
+		/*
+		 * Fetch the share numbers for Google+ if it's enabled.
+		 */
+		if ( array_key_exists( 'google', $this->settings['social_sites']['enabled'] ) ) {
+			$shares['google'] = $this->get_plus_ones( $this->url );
+		} else {
+			$shares['google'] = 0;
 		}
 
 		$final_shares = array(
@@ -225,6 +251,59 @@ class Naked_Social_Share_Buttons {
 		// Return the numbers.
 		return $shares;
 
+	}
+
+	/**
+	 * GetPlusOnesByURL()
+	 *
+	 * Get the numeric, total count of +1s from Google+ users for a given URL.
+	 *
+	 * @author          Stephan Schmitz <eyecatchup@gmail.com>
+	 * @copyright       Copyright (c) 2014 Stephan Schmitz
+	 * @license         http://eyecatchup.mit-license.org/  MIT License
+	 * @link            <a href="https://gist.github.com/eyecatchup/8495140">Source</a>.
+	 * @link            <a href="http://stackoverflow.com/a/13385591/624466">Read more</a>.
+	 *
+	 * @param   $url    string  The URL to check the +1 count for.
+	 *
+	 * @return  int          The total count of +1s.
+	 */
+	public function get_plus_ones( $url ) {
+		if ( empty( $url ) ) {
+			return 0;
+		}
+
+		! filter_var( $url, FILTER_VALIDATE_URL ) &&
+		die( sprintf( 'PHP said, "%s" is not a valid URL.', $url ) );
+
+		foreach ( array( 'apis', 'plusone' ) as $host ) {
+			$ch = curl_init( sprintf( 'https://%s.google.com/u/0/_/+1/fastbutton?url=%s',
+				$host, urlencode( $url ) ) );
+			curl_setopt_array( $ch, array(
+				CURLOPT_FOLLOWLOCATION => 1,
+				CURLOPT_RETURNTRANSFER => 1,
+				CURLOPT_SSL_VERIFYPEER => 0,
+				CURLOPT_USERAGENT      => 'Mozilla/5.0 (Windows NT 6.1; WOW64) ' .
+				                          'AppleWebKit/537.36 (KHTML, like Gecko) ' .
+				                          'Chrome/32.0.1700.72 Safari/537.36'
+			) );
+			$response = curl_exec( $ch );
+			$curlinfo = curl_getinfo( $ch );
+			curl_close( $ch );
+
+			if ( 200 === $curlinfo['http_code'] && 0 < strlen( $response ) ) {
+				break 1;
+			}
+			$response = 0;
+		}
+
+		if ( ! isset( $response ) || empty( $response ) ) {
+			return 0;
+		}
+
+		preg_match_all( '/window\.__SSR\s\=\s\{c:\s(\d+?)\./', $response, $match, PREG_SET_ORDER );
+
+		return ( 1 === sizeof( $match ) && 2 === sizeof( $match[0] ) ) ? intval( $match[0][1] ) : 0;
 	}
 
 	/**
@@ -270,32 +349,87 @@ class Naked_Social_Share_Buttons {
 	 */
 	public function display_share_markup() {
 		$twitter_handle = $this->settings['twitter_handle'];
+		$social_sites   = $this->settings['social_sites'];
 		?>
 		<div class="naked-social-share">
 			<ul>
-				<li class="nss-twitter">
-					<a href="http://www.twitter.com/intent/tweet?url=<?php echo urlencode( get_permalink( $this->post ) ) ?><?php echo ( ! empty( $twitter_handle ) ) ? '&via=' . $twitter_handle : ''; ?>&text=<?php echo urlencode( get_the_title( $this->post ) ) ?>" target="_blank"><i class="fa fa-twitter"></i>
-						<?php _e( 'Twitter', 'naked-social-share' ); ?>
-						<span><?php echo $this->share_numbers['twitter']; ?></span></a>
-				</li>
-				<li class="nss-facebook">
-					<a href="http://www.facebook.com/sharer/sharer.php?u=<?php echo get_permalink( $this->post ); ?>&t=<?php echo get_the_title( $this->post ); ?>" target="_blank"><i class="fa fa-facebook"></i>
-						<?php _e( 'Facebook', 'naked-social-share' ); ?>
-						<span><?php echo $this->share_numbers['facebook']; ?></span></a>
-				</li>
-				<li class="nss-pinterest">
-					<a href="http://pinterest.com/pin/create/button/?url=<?php echo get_permalink( $this->post ); ?>&media=<?php echo $this->get_featured_image_url(); ?>&description=<?php echo urlencode( get_the_title( $this->post ) ); ?>" target="_blank"><i class="fa fa-pinterest"></i>
-						<?php _e( 'Pinterest', 'naked-social-share' ); ?>
-						<span><?php echo $this->share_numbers['pinterest']; ?></span></a>
-				</li>
-				<li class="nss-stumbleupon">
-					<a href="http://www.stumbleupon.com/submit?url=<?php get_permalink( $this->post ); ?>&title=<?php echo urlencode( get_the_title( $this->post ) ); ?>" target="_blank"><i class="fa fa-stumbleupon"></i>
-						<?php _e( 'StumbleUpon', 'naked-social-share' ); ?>
-						<span><?php echo $this->share_numbers['stumbleupon']; ?></span></a>
-				</li>
+				<?php foreach ( $social_sites['enabled'] as $key => $site_name ) { ?>
+					<?php switch ( $key ) {
+						case 'twitter' :
+							?>
+							<li class="nss-twitter">
+								<a href="http://www.twitter.com/intent/tweet?url=<?php echo urlencode( get_permalink( $this->post ) ) ?><?php echo ( ! empty( $twitter_handle ) ) ? '&via=' . $twitter_handle : ''; ?>&text=<?php echo $this->get_title(); ?>" target="_blank"><i class="fa fa-twitter"></i>
+									<?php _e( 'Twitter', 'naked-social-share' ); ?>
+									<span><?php echo array_key_exists( 'twitter', $this->share_numbers ) ? $this->share_numbers['twitter'] : 0; ?></span></a>
+							</li>
+							<?php
+							break;
+
+						case 'facebook' :
+							?>
+							<li class="nss-facebook">
+								<a href="http://www.facebook.com/sharer/sharer.php?u=<?php echo get_permalink( $this->post ); ?>&t=<?php echo $this->get_title(); ?>" target="_blank"><i class="fa fa-facebook"></i>
+									<?php _e( 'Facebook', 'naked-social-share' ); ?>
+									<span><?php echo array_key_exists( 'facebook', $this->share_numbers ) ? $this->share_numbers['facebook'] : 0; ?></span></a>
+							</li>
+							<?php
+							break;
+
+						case 'pinterest' :
+							?>
+							<li class="nss-pinterest">
+								<a href="http://pinterest.com/pin/create/button/?url=<?php echo get_permalink( $this->post ); ?>&media=<?php echo $this->get_featured_image_url(); ?>&description=<?php echo $this->get_title(); ?>" target="_blank"><i class="fa fa-pinterest"></i>
+									<?php _e( 'Pinterest', 'naked-social-share' ); ?>
+									<span><?php echo array_key_exists( 'pinterest', $this->share_numbers ) ? $this->share_numbers['pinterest'] : 0; ?></span></a>
+							</li>
+							<?php
+							break;
+
+						case 'stumbleupon' :
+							?>
+							<li class="nss-stumbleupon">
+								<a href="http://www.stumbleupon.com/submit?url=<?php echo get_permalink( $this->post ); ?>&title=<?php echo $this->get_title(); ?>" target="_blank"><i class="fa fa-stumbleupon"></i>
+									<?php _e( 'StumbleUpon', 'naked-social-share' ); ?>
+									<span><?php echo array_key_exists( 'stumbleupon', $this->share_numbers ) ? $this->share_numbers['stumbleupon'] : 0; ?></span></a>
+							</li>
+							<?php
+							break;
+
+						case 'google' :
+							?>
+							<li class="nss-google">
+								<a href="https://plus.google.com/share?url=<?php echo get_permalink( $this->post ); ?>" target="_blank"><i class="fa fa-google-plus"></i>
+									<?php _e( 'Google+', 'naked-social-share' ); ?>
+									<span><?php echo array_key_exists( 'google', $this->share_numbers ) ? $this->share_numbers['google'] : 0; ?></span></a>
+							</li>
+							<?php
+							break;
+					}
+				} ?>
 			</ul>
 		</div>
 	<?php
+	}
+
+	/**
+	 * Gets the title of the post, decodes the HTML entities
+	 * and urlencodes it for use in a URL.
+	 *
+	 * @param bool $urlencode
+	 *
+	 * @access public
+	 * @since  1.0.6
+	 * @return string
+	 */
+	public function get_title( $urlencode = true ) {
+		$title_raw     = get_the_title( $this->post );
+		$title_decoded = html_entity_decode( $title_raw );
+
+		if ( $urlencode != true ) {
+			return $title_decoded;
+		}
+
+		return urlencode( $title_decoded );
 	}
 
 }

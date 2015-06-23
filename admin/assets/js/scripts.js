@@ -36,4 +36,28 @@
 
     });
 
+    // Initialize the sorter box
+    $('.sorter').each(function () {
+        var id = jQuery(this).attr('id');
+        $('#' + id).find('ul').sortable({
+            items: 'li',
+            placeholder: "placeholder",
+            connectWith: '.sortlist_' + id,
+            opacity: 0.6,
+            update: function () {
+                $(this).find('.sorter-input').each(function () {
+
+                    var listID = $(this).parent().attr('id');
+                    var parentID = $(this).parent().parent().attr('id');
+                    parentID = parentID.replace(id + '_', '');
+                    var optionID = $(this).parent().parent().parent().attr('id');
+                    var settingsID = $(this).parent().parent().parent().find('.ng-settings-key').val();
+                    var keyID = $(this).data('key');
+                    $(this).prop("name", settingsID + '[' + optionID + ']' + '[' + parentID + '][' + listID + '][' + keyID + ']');
+
+                });
+            }
+        });
+    });
+
 })(jQuery);

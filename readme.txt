@@ -1,4 +1,4 @@
-=== Plugin Name ===
+=== Naked Social Share ===
 Contributors: NoseGraze
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L2TL7ZBVUMG9C
 Tags: social, twitter, facebook, pinterest, stumbleupon, social share
@@ -12,7 +12,7 @@ Simple, unstyled social share icons for theme designers.
 
 == Description ==
 
-Naked Social Share allows you to insert plain, unstyled social share buttons for Twitter, Facebook, Pinterest, and StumbleUpon after each post. The icons come with no styling, so that you -- the designer -- can style the buttons to match your theme.
+Naked Social Share allows you to insert plain, unstyled social share buttons for Twitter, Facebook, Pinterest, StumbleUpon, and Google+ after each post. The icons come with no styling, so that you -- the designer -- can style the buttons to match your theme.
 
 There are a few simple options in the settings panel:
 
@@ -21,6 +21,7 @@ There are a few simple options in the settings panel:
 * Disable JavaScript - There is a small amount of JavaScript used to make the buttons open in a new popup window when clicked.
 * Automatically add buttons - You can opt to automatically add the social icons below blog posts or pages.
 * Twitter handle - Add your Twitter handle to include a "via @YourHandle" message in the Tweet.
+* Social media sites - Change the order the buttons appear in and disable any you don't want.
 
 If you want to display the icons manually in your theme, do so by placing this code inside your theme file where you want the icons to appear:
 
@@ -50,8 +51,14 @@ The share counters are cached for 3 hours to improve loading times and to avoid 
 
 == Changelog ==
 
+= 1.1.0 =
+* Settings Panel: You can now change the display order of the social media sites and disable the ones you don't want.
+* Settings Panel: Google+ button option is now available.
+* Buttons: Fixed a problem with ampersands displaying as their HTML entities when sharing a post (specifically Twitter).
+* Updated readme.txt
+
 = 1.0.5 =
-Made some code adjustments to the Naked_Social_Share_Buttons class so you can fetch the buttons for any post object.
+* Made some code adjustments to the Naked_Social_Share_Buttons class so you can fetch the buttons for any post object.
 
 = 1.0.4 =
 * Fixed a problem with the caching not working properly.
@@ -72,5 +79,5 @@ Made some code adjustments to the Naked_Social_Share_Buttons class so you can fe
 
 == Upgrade Notice ==
 
-= 1.0.5 =
-Made some code adjustments to the Naked_Social_Share_Buttons class so you can fetch the buttons for any post object.
+= 1.1.0 =
+Added Google+ button. You can now change the order the buttons appear in and disable ones you don't want.

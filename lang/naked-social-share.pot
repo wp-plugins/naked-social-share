@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Naked Social Share\n"
-"POT-Creation-Date: 2015-04-10 14:19-0000\n"
-"PO-Revision-Date: 2015-04-10 14:19-0000\n"
+"POT-Creation-Date: 2015-06-23 17:54-0000\n"
+"PO-Revision-Date: 2015-06-23 17:54-0000\n"
 "Last-Translator: Creative Whim <support@creativewhim.com>\n"
 "Language-Team: Creative Whim <support@creativewhim.com>\n"
 "Language: en_GB\n"
@@ -34,40 +34,44 @@ msgstr ""
 msgid "Off"
 msgstr ""
 
-#: admin/ng-settings.class.php:519
+#: admin/ng-settings.class.php:518
 msgid "Settings updated."
 msgstr ""
 
-#: admin/ng-settings.class.php:561
+#: admin/ng-settings.class.php:560
 msgid ""
 "Error: Color field not updated. You must insert a valid color into the color "
 "picker."
 msgstr ""
 
-#: admin/ng-settings.class.php:853
+#: admin/ng-settings.class.php:852
 msgid "Select a Category"
 msgstr ""
 
-#: admin/ng-settings.class.php:1029
+#: admin/ng-settings.class.php:1028
 #, php-format
 msgid ""
 "The callback function used for the <strong>%s</strong> setting is missing."
 msgstr ""
 
-#: class-naked-social-share-buttons.php:263
+#: class-naked-social-share-buttons.php:362 class-naked-social-share.php:311
 msgid "Twitter"
 msgstr ""
 
-#: class-naked-social-share-buttons.php:268
+#: class-naked-social-share-buttons.php:372 class-naked-social-share.php:314
 msgid "Facebook"
 msgstr ""
 
-#: class-naked-social-share-buttons.php:273
+#: class-naked-social-share-buttons.php:382 class-naked-social-share.php:317
 msgid "Pinterest"
 msgstr ""
 
-#: class-naked-social-share-buttons.php:278
+#: class-naked-social-share-buttons.php:392 class-naked-social-share.php:320
 msgid "StumbleUpon"
+msgstr ""
+
+#: class-naked-social-share-buttons.php:402 class-naked-social-share.php:325
+msgid "Google+"
 msgstr ""
 
 #: class-naked-social-share.php:152 class-naked-social-share.php:164
@@ -145,6 +149,15 @@ msgstr ""
 msgid "Enter your Twitter handle (WITHOUT the @ sign)"
 msgstr ""
 
-#: class-naked-social-share.php:310
+#: class-naked-social-share.php:305
+msgid "Social Media Sites"
+msgstr ""
+
+#: class-naked-social-share.php:306
+msgid ""
+"Drag the sites you want to display buttons for into the \"Enabled\" column."
+msgstr ""
+
+#: class-naked-social-share.php:337
 msgid "Naked Social Share"
 msgstr ""

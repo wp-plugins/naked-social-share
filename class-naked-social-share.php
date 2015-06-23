@@ -300,6 +300,33 @@ class Naked_Social_Share {
 						'type'        => 'text',
 						'placeholder' => 'NoseGraze',
 					),
+					'social_sites'   => array(
+						'id'   => 'social_sites',
+						'name' => __( 'Social Media Sites', 'naked-social-share' ),
+						'desc' => __( 'Drag the sites you want to display buttons for into the "Enabled" column.', 'naked-social-share' ),
+						'type' => 'sorter',
+						'std'  => array(
+							'enabled'  => array(
+								'twitter'     => array(
+									'name' => __( 'Twitter', 'naked-social-share' ),
+								),
+								'facebook'    => array(
+									'name' => __( 'Facebook', 'naked-social-share' ),
+								),
+								'pinterest'   => array(
+									'name' => __( 'Pinterest', 'naked-social-share' ),
+								),
+								'stumbleupon' => array(
+									'name' => __( 'StumbleUpon', 'naked-social-share' )
+								),
+							),
+							'disabled' => array(
+								'google' => array(
+									'name' => __( 'Google+', 'naked-social-share' )
+								)
+							)
+						)
+					)
 				)
 			),
 		) );
