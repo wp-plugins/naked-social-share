@@ -51,10 +51,13 @@ The share counters are cached for 3 hours to improve loading times and to avoid 
 
 == Changelog ==
 
+= 1.1.1 =
+* Changed the method used to retrieve the Facebook share count.
+
 = 1.1.0 =
 * Settings Panel: You can now change the display order of the social media sites and disable the ones you don't want.
 * Settings Panel: Google+ button option is now available.
-* Buttons: Fixed a problem with ampersands displaying as their HTML entities when sharing a post (specifically Twitter).
+* Buttons: Fixed a problem with ampersands displaying as their HTML entities when sharing a post (specifically Twitter). Titles are now run through html_entity_decode()
 * Updated readme.txt
 
 = 1.0.5 =
@@ -79,5 +82,5 @@ The share counters are cached for 3 hours to improve loading times and to avoid 
 
 == Upgrade Notice ==
 
-= 1.1.0 =
-Added Google+ button. You can now change the order the buttons appear in and disable ones you don't want.
+= 1.1.1 =
+Changed the method used to retrieve the Facebook share count.
