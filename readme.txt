@@ -51,6 +51,9 @@ The share counters are cached for 3 hours to improve loading times and to avoid 
 
 == Changelog ==
 
+= 1.1.2 =
+* Added more class names to the buttons so you can target the site name (text) and the counter numbers separately.
+
 = 1.1.1 =
 * Changed the method used to retrieve the Facebook share count.
 
@@ -82,5 +85,5 @@ The share counters are cached for 3 hours to improve loading times and to avoid 
 
 == Upgrade Notice ==
 
-= 1.1.1 =
-Changed the method used to retrieve the Facebook share count.
+= 1.1.2 =
+Added more spans and class names to the markup for more styling control.

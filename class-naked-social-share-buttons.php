@@ -360,8 +360,8 @@ class Naked_Social_Share_Buttons {
 							?>
 							<li class="nss-twitter">
 								<a href="http://www.twitter.com/intent/tweet?url=<?php echo urlencode( get_permalink( $this->post ) ) ?><?php echo ( ! empty( $twitter_handle ) ) ? '&via=' . $twitter_handle : ''; ?>&text=<?php echo $this->get_title(); ?>" target="_blank"><i class="fa fa-twitter"></i>
-									<?php _e( 'Twitter', 'naked-social-share' ); ?>
-									<span><?php echo array_key_exists( 'twitter', $this->share_numbers ) ? $this->share_numbers['twitter'] : 0; ?></span></a>
+									<span class="nss-site-name"><?php _e( 'Twitter', 'naked-social-share' ); ?></span>
+									<span class="nss-site-count"><?php echo array_key_exists( 'twitter', $this->share_numbers ) ? $this->share_numbers['twitter'] : 0; ?></span></a>
 							</li>
 							<?php
 							break;
@@ -370,8 +370,8 @@ class Naked_Social_Share_Buttons {
 							?>
 							<li class="nss-facebook">
 								<a href="http://www.facebook.com/sharer/sharer.php?u=<?php echo get_permalink( $this->post ); ?>&t=<?php echo $this->get_title(); ?>" target="_blank"><i class="fa fa-facebook"></i>
-									<?php _e( 'Facebook', 'naked-social-share' ); ?>
-									<span><?php echo array_key_exists( 'facebook', $this->share_numbers ) ? $this->share_numbers['facebook'] : 0; ?></span></a>
+									<span class="nss-site-name"><?php _e( 'Facebook', 'naked-social-share' ); ?></span>
+									<span class="nss-site-count"><?php echo array_key_exists( 'facebook', $this->share_numbers ) ? $this->share_numbers['facebook'] : 0; ?></span></a>
 							</li>
 							<?php
 							break;
@@ -380,8 +380,8 @@ class Naked_Social_Share_Buttons {
 							?>
 							<li class="nss-pinterest">
 								<a href="http://pinterest.com/pin/create/button/?url=<?php echo get_permalink( $this->post ); ?>&media=<?php echo $this->get_featured_image_url(); ?>&description=<?php echo $this->get_title(); ?>" target="_blank"><i class="fa fa-pinterest"></i>
-									<?php _e( 'Pinterest', 'naked-social-share' ); ?>
-									<span><?php echo array_key_exists( 'pinterest', $this->share_numbers ) ? $this->share_numbers['pinterest'] : 0; ?></span></a>
+									<span class="nss-site-name"><?php _e( 'Pinterest', 'naked-social-share' ); ?></span>
+									<span class="nss-site-count"><?php echo array_key_exists( 'pinterest', $this->share_numbers ) ? $this->share_numbers['pinterest'] : 0; ?></span></a>
 							</li>
 							<?php
 							break;
@@ -390,8 +390,8 @@ class Naked_Social_Share_Buttons {
 							?>
 							<li class="nss-stumbleupon">
 								<a href="http://www.stumbleupon.com/submit?url=<?php echo get_permalink( $this->post ); ?>&title=<?php echo $this->get_title(); ?>" target="_blank"><i class="fa fa-stumbleupon"></i>
-									<?php _e( 'StumbleUpon', 'naked-social-share' ); ?>
-									<span><?php echo array_key_exists( 'stumbleupon', $this->share_numbers ) ? $this->share_numbers['stumbleupon'] : 0; ?></span></a>
+									<span class="nss-site-name"><?php _e( 'StumbleUpon', 'naked-social-share' ); ?></span>
+									<span class="nss-site-count"><?php echo array_key_exists( 'stumbleupon', $this->share_numbers ) ? $this->share_numbers['stumbleupon'] : 0; ?></span></a>
 							</li>
 							<?php
 							break;
@@ -400,8 +400,8 @@ class Naked_Social_Share_Buttons {
 							?>
 							<li class="nss-google">
 								<a href="https://plus.google.com/share?url=<?php echo get_permalink( $this->post ); ?>" target="_blank"><i class="fa fa-google-plus"></i>
-									<?php _e( 'Google+', 'naked-social-share' ); ?>
-									<span><?php echo array_key_exists( 'google', $this->share_numbers ) ? $this->share_numbers['google'] : 0; ?></span></a>
+									<span class="nss-site-name"><?php _e( 'Google+', 'naked-social-share' ); ?></span>
+									<span class="nss-site-count"><?php echo array_key_exists( 'google', $this->share_numbers ) ? $this->share_numbers['google'] : 0; ?></span></a>
 							</li>
 							<?php
 							break;
