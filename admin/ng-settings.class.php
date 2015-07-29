@@ -244,7 +244,7 @@ class Nose_Graze_Settings {
 					<div class="ng-settings-buttons">
 						<?php submit_button(); ?>
 						<p id="reset-tab">
-							<input type="submit" name="ng-reset-defaults" class="button-secondary" value="<?php esc_attr_e( 'Reset Tab', 'ubb' ); ?>">
+							<input type="submit" name="ng-reset-defaults" class="button-secondary" value="<?php esc_attr_e( 'Reset Tab', $this->options_slug ); ?>">
 						</p>
 					</div>
 				</form>
@@ -920,6 +920,57 @@ class Nose_Graze_Settings {
 		}
 		$html = '<input type="text" class="ng-color-field" id="' . $this->options_slug . '_settings[' . $args['id'] . ']" name="' . $this->options_slug . '_settings[' . $args['id'] . ']" value="' . esc_attr( stripslashes( $value ) ) . '">';
 		echo $html;
+	}
+
+	/**
+	 * Border Callback
+	 *
+	 * Renders a border field with size, style, and colour.
+	 *
+	 * @param array $args The arguments passed by the setting
+	 *
+	 * @access public
+	 * @since  1.0.0
+	 * @return void
+	 */
+	public function border_callback( $args ) {
+		$options = $this->get_options();
+
+		if ( isset( $options[ $args['id'] ] ) ) {
+			$value = $options[ $args['id'] ];
+		} else {
+			$value = isset( $args['std'] ) ? $args['std'] : '';
+		}
+		?>
+		<div class="ng-border-field-wrap">
+			<?php if ( array_key_exists( 'size', $value ) ) : ?>
+				<div class="ng-border-width-wrap">
+					<label for="<?php echo $this->options_slug; ?>_settings[<?php echo $args['id']; ?>][size]"><?php _e( 'Width (px)', $this->options_slug ); ?></label>
+					<input type="number" id="<?php echo $this->options_slug; ?>_settings[<?php echo $args['id']; ?>][size]" name="<?php echo $this->options_slug; ?>_settings[<?php echo $args['id']; ?>][size]" value="<?php esc_attr_e( stripslashes( $value['size'] ) ); ?>">
+				</div>
+			<?php endif; ?>
+
+			<?php if ( array_key_exists( 'style', $value ) ) : ?>
+				<div class="ng-border-style-wrap">
+					<label for="<?php echo $this->options_slug; ?>_settings[<?php echo $args['id']; ?>][style]"><?php _e( 'Style', $this->options_slug ); ?></label>
+					<select id="<?php echo $this->options_slug; ?>_settings[<?php echo $args['id']; ?>][style]" name="<?php echo $this->options_slug; ?>_settings[<?php echo $args['id']; ?>][style]">
+						<option value="none" <?php selected( $value['style'], 'none' ); ?>><?php _e( 'None', $this->options_slug ); ?></option>
+						<option value="solid" <?php selected( $value['style'], 'solid' ); ?>><?php _e( 'Solid', $this->options_slug ); ?></option>
+						<option value="dashed" <?php selected( $value['style'], 'dashed' ); ?>><?php _e( 'Dashed', $this->options_slug ); ?></option>
+						<option value="double" <?php selected( $value['style'], 'double' ); ?>><?php _e( 'Double', $this->options_slug ); ?></option>
+						<option value="dotted" <?php selected( $value['style'], 'dotted' ); ?>><?php _e( 'Dotted', $this->options_slug ); ?></option>
+					</select>
+				</div>
+			<?php endif; ?>
+
+			<?php if ( array_key_exists( 'color', $value ) ) : ?>
+				<div class="ng-border-width-wrap">
+					<label for="<?php echo $this->options_slug; ?>_settings[<?php echo $args['id']; ?>][color]"><?php _e( 'Colour', $this->options_slug ); ?></label>
+					<input type="text" id="<?php echo $this->options_slug; ?>_settings[<?php echo $args['id']; ?>][color]" name="<?php echo $this->options_slug; ?>_settings[<?php echo $args['id']; ?>][color]" class="ng-color-field" value="<?php esc_attr_e( stripslashes( $value['color'] ) ); ?>">
+				</div>
+			<?php endif; ?>
+		</div>
+		<?php
 	}
 
 	/**

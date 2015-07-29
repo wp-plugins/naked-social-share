@@ -3,7 +3,7 @@ Contributors: NoseGraze
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L2TL7ZBVUMG9C
 Tags: social, twitter, facebook, pinterest, stumbleupon, social share
 Requires at least: 3.0
-Tested up to: 4.2
+Tested up to: 4.2.3
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -51,6 +51,11 @@ The share counters are cached for 3 hours to improve loading times and to avoid 
 
 == Changelog ==
 
+= 1.1.3 =
+* Fixed an incorrectly spelled slug.
+* Updated the settings panel (no visual changes).
+* Tested with WordPress version 4.2.3
+
 = 1.1.2 =
 * Added more class names to the buttons so you can target the site name (text) and the counter numbers separately.
 
@@ -85,5 +90,5 @@ The share counters are cached for 3 hours to improve loading times and to avoid 
 
 == Upgrade Notice ==
 
-= 1.1.2 =
-Added more spans and class names to the markup for more styling control.
+= 1.1.3 =
+Minor code tweaks and tested with WordPress 4.2.3

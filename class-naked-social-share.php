@@ -277,7 +277,7 @@ class Naked_Social_Share {
 					'disable_js'     => array(
 						'id'   => 'disable_js',
 						'name' => __( 'Disable JavaScript', 'naked-social-share' ),
-						'desc' => __( 'Some simple JavaScript is used to make the share links open in small popup windows. Disabling the JavaScript will lose that behaviour.', 'naked-social-shre' ),
+						'desc' => __( 'Some simple JavaScript is used to make the share links open in small popup windows. Disabling the JavaScript will lose that behaviour.', 'naked-social-share' ),
 						'type' => 'checkbox',
 						'std'  => false
 					),
