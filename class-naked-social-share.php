@@ -103,6 +103,9 @@ class Naked_Social_Share {
 		// Register the activation hook
 		register_activation_hook( $this->file, array( $this, 'install' ) );
 
+		// Upgrade routine.
+		add_action( 'admin_init', array( $this, 'check_upgrades' ) );
+
 		// Include necessary files.
 		$this->includes();
 		// Load settings into the options panel.
@@ -228,6 +231,70 @@ class Naked_Social_Share {
 	}
 
 	/**
+	 * Gets the plugin version saved in the database.
+	 *
+	 * @access public
+	 * @since  1.2.0
+	 * @return int
+	 */
+	public function get_db_version() {
+		$option = get_option( $this->_token . '_version' );
+
+		return ! empty( $option ) ? $option : 0;
+	}
+
+	/**
+	 * Checks for any upgrades that haven't been done.
+	 *
+	 * If the DB version doesn't match the current plugin version
+	 * then upgrades are performed and the new version number is
+	 * logged in the DB.
+	 *
+	 * @access public
+	 * @since  1.2.0
+	 * @return void
+	 */
+	public function check_upgrades() {
+		// If the versions match - bail.
+		if ( $this->_version == $this->get_db_version() ) {
+			return;
+		}
+
+		// Otherwise, run the upgrade routine.
+		$this->upgrade( $this->get_db_version() );
+		$this->_log_version_number();
+	}
+
+	/**
+	 * Performs upgrade routines.
+	 *
+	 * @param int $db_version
+	 *
+	 * @access private
+	 * @since  1.2.0
+	 * @return void
+	 */
+	private function upgrade( $db_version ) {
+		/*
+		 * Upgrade to 1.2.0 to add new social sites.
+		 */
+		if ( version_compare( $db_version, '1.2.0', '<' ) ) {
+			$social_sites = $this->settings['social_sites'];
+
+			// Add LinkedIn.
+			if ( ! array_key_exists( 'linkedin', $social_sites['enabled'] ) && ! array_key_exists( 'linkedin', $social_sites['disabled'] ) ) {
+				$social_sites['disabled']['linkedin'] = array(
+					'name' => __( 'LinkedIn', 'naked-social-share' )
+				);
+
+				$this->settings['social_sites'] = $social_sites;
+
+				update_option( 'naked_ss_settings', $this->settings );
+			}
+		}
+	}
+
+	/**
 	 * Adds a link to the plugin's settings page on the listing.
 	 *
 	 * @param $links
@@ -260,28 +327,28 @@ class Naked_Social_Share {
 				'title'  => __( 'General Settings', 'naked-social-share' ),
 				'desc'   => __( 'Just a few settings for this plugin.', 'naked-social-share' ),
 				'fields' => array(
-					'load_styles'    => array(
+					'load_styles'      => array(
 						'id'   => 'load_styles',
 						'name' => __( 'Load Default Styles', 'naked-social-share' ),
 						'desc' => __( 'If checked, a stylesheet will be loaded to give the buttons a few basic styles.', 'naked-social-shre' ),
 						'type' => 'checkbox',
 						'std'  => false
 					),
-					'load_fa'        => array(
+					'load_fa'          => array(
 						'id'   => 'load_fa',
 						'name' => __( 'Load Font Awesome', 'naked-social-share' ),
 						'desc' => __( 'Font Awesome is used for the brand icons.', 'naked-social-shre' ),
 						'type' => 'checkbox',
 						'std'  => true
 					),
-					'disable_js'     => array(
+					'disable_js'       => array(
 						'id'   => 'disable_js',
 						'name' => __( 'Disable JavaScript', 'naked-social-share' ),
 						'desc' => __( 'Some simple JavaScript is used to make the share links open in small popup windows. Disabling the JavaScript will lose that behaviour.', 'naked-social-share' ),
 						'type' => 'checkbox',
 						'std'  => false
 					),
-					'auto_add'       => array(
+					'auto_add'         => array(
 						'id'      => 'auto_add',
 						'name'    => __( 'Automatically Add Buttons', 'naked-social-share' ),
 						'desc'    => sprintf( __( 'Choose where you want the buttons to appear automatically. Alternatively, you can add the icons to your theme manually using this function: %s', 'naked-social-shre' ), '<code>naked_social_share_buttons();</code>' ),
@@ -293,14 +360,21 @@ class Naked_Social_Share {
 							'pages'        => __( 'Pages', 'naked-social-share' )
 						)
 					),
-					'twitter_handle' => array(
+					'disable_counters' => array(
+						'id'   => 'disable_counters',
+						'name' => __( 'Disable Share Counters', 'naked-social-share' ),
+						'desc' => __( 'If checked, the number of shares for each post/site will not be displayed.', 'naked-social-share' ),
+						'type' => 'checkbox',
+						'std'  => false
+					),
+					'twitter_handle'   => array(
 						'id'          => 'twitter_handle',
 						'name'        => __( 'Twitter  Handle', 'naked-social-share' ),
 						'desc'        => __( 'Enter your Twitter handle (WITHOUT the @ sign)', 'naked-social-shre' ),
 						'type'        => 'text',
 						'placeholder' => 'NoseGraze',
 					),
-					'social_sites'   => array(
+					'social_sites'     => array(
 						'id'   => 'social_sites',
 						'name' => __( 'Social Media Sites', 'naked-social-share' ),
 						'desc' => __( 'Drag the sites you want to display buttons for into the "Enabled" column.', 'naked-social-share' ),
@@ -321,8 +395,11 @@ class Naked_Social_Share {
 								),
 							),
 							'disabled' => array(
-								'google' => array(
+								'google'   => array(
 									'name' => __( 'Google+', 'naked-social-share' )
+								),
+								'linkedin' => array(
+									'name' => __( 'LinkedIn', 'naked-social-share' )
 								)
 							)
 						)

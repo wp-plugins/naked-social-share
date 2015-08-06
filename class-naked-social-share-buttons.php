@@ -87,9 +87,12 @@ class Naked_Social_Share_Buttons {
 		$naked_social_share = Naked_Social_Share();
 		$this->settings     = $naked_social_share->settings;
 
-		$this->url           = get_permalink( $this->post );
-		$this->share_numbers = get_post_meta( $this->post->ID, 'naked_shares_count', true );
-		$this->share_numbers = $this->get_share_numbers();
+		$this->url = get_permalink( $this->post );
+
+		if ( $this->settings['disable_counters'] != 1 ) {
+			$this->share_numbers = get_post_meta( $this->post->ID, 'naked_shares_count', true );
+			$this->share_numbers = $this->get_share_numbers();
+		}
 	}
 
 	/**
@@ -138,7 +141,8 @@ class Naked_Social_Share_Buttons {
 				'facebook'    => 0,
 				'pinterest'   => 0,
 				'stumbleupon' => 0,
-				'google'      => 0
+				'google'      => 0,
+				'linkedin'    => 0
 			);
 		} else {
 			// If we don't want to cache the numbers, remove the expiry time.
@@ -237,6 +241,27 @@ class Naked_Social_Share_Buttons {
 		} else {
 			$shares['google'] = 0;
 		}
+
+		/*
+		 * Fetch the share numbers for LinkedIn if it's enabled.
+		 */
+		if ( array_key_exists( 'linkedin', $this->settings['social_sites']['enabled'] ) ) {
+			$linked_url      = 'https://www.linkedin.com/countserv/count/share?url=' . $this->url . '&format=json';
+			$linked_response = wp_remote_get( esc_url_raw( $linked_url ) );
+			// Make sure the response came back okay.
+			if ( ! is_wp_error( $linked_response ) && wp_remote_retrieve_response_code( $linked_response ) == 200 ) {
+				$linked_body = json_decode( wp_remote_retrieve_body( $linked_response ) );
+				if ( $linked_body->count && is_numeric( $linked_body->count ) ) {
+					$shares['linkedin'] = $linked_body->count;
+				}
+			}
+		} else {
+			$shares['linkedin'] = 0;
+		}
+
+		/*
+		 * Put together the final share numbers.
+		 */
 
 		$final_shares = array(
 			'shares' => $shares,
@@ -361,7 +386,10 @@ class Naked_Social_Share_Buttons {
 							<li class="nss-twitter">
 								<a href="http://www.twitter.com/intent/tweet?url=<?php echo urlencode( get_permalink( $this->post ) ) ?><?php echo ( ! empty( $twitter_handle ) ) ? '&via=' . $twitter_handle : ''; ?>&text=<?php echo $this->get_title(); ?>" target="_blank"><i class="fa fa-twitter"></i>
 									<span class="nss-site-name"><?php _e( 'Twitter', 'naked-social-share' ); ?></span>
-									<span class="nss-site-count"><?php echo array_key_exists( 'twitter', $this->share_numbers ) ? $this->share_numbers['twitter'] : 0; ?></span></a>
+									<?php if ( $this->settings['disable_counters'] != 1 ) : ?>
+										<span class="nss-site-count"><?php echo array_key_exists( 'twitter', $this->share_numbers ) ? $this->share_numbers['twitter'] : 0; ?></span>
+									<?php endif; ?>
+								</a>
 							</li>
 							<?php
 							break;
@@ -371,7 +399,10 @@ class Naked_Social_Share_Buttons {
 							<li class="nss-facebook">
 								<a href="http://www.facebook.com/sharer/sharer.php?u=<?php echo get_permalink( $this->post ); ?>&t=<?php echo $this->get_title(); ?>" target="_blank"><i class="fa fa-facebook"></i>
 									<span class="nss-site-name"><?php _e( 'Facebook', 'naked-social-share' ); ?></span>
-									<span class="nss-site-count"><?php echo array_key_exists( 'facebook', $this->share_numbers ) ? $this->share_numbers['facebook'] : 0; ?></span></a>
+									<?php if ( $this->settings['disable_counters'] != 1 ) : ?>
+										<span class="nss-site-count"><?php echo array_key_exists( 'facebook', $this->share_numbers ) ? $this->share_numbers['facebook'] : 0; ?></span>
+									<?php endif; ?>
+								</a>
 							</li>
 							<?php
 							break;
@@ -381,7 +412,10 @@ class Naked_Social_Share_Buttons {
 							<li class="nss-pinterest">
 								<a href="http://pinterest.com/pin/create/button/?url=<?php echo get_permalink( $this->post ); ?>&media=<?php echo $this->get_featured_image_url(); ?>&description=<?php echo $this->get_title(); ?>" target="_blank"><i class="fa fa-pinterest"></i>
 									<span class="nss-site-name"><?php _e( 'Pinterest', 'naked-social-share' ); ?></span>
-									<span class="nss-site-count"><?php echo array_key_exists( 'pinterest', $this->share_numbers ) ? $this->share_numbers['pinterest'] : 0; ?></span></a>
+									<?php if ( $this->settings['disable_counters'] != 1 ) : ?>
+										<span class="nss-site-count"><?php echo array_key_exists( 'pinterest', $this->share_numbers ) ? $this->share_numbers['pinterest'] : 0; ?></span>
+									<?php endif; ?>
+								</a>
 							</li>
 							<?php
 							break;
@@ -391,7 +425,10 @@ class Naked_Social_Share_Buttons {
 							<li class="nss-stumbleupon">
 								<a href="http://www.stumbleupon.com/submit?url=<?php echo get_permalink( $this->post ); ?>&title=<?php echo $this->get_title(); ?>" target="_blank"><i class="fa fa-stumbleupon"></i>
 									<span class="nss-site-name"><?php _e( 'StumbleUpon', 'naked-social-share' ); ?></span>
-									<span class="nss-site-count"><?php echo array_key_exists( 'stumbleupon', $this->share_numbers ) ? $this->share_numbers['stumbleupon'] : 0; ?></span></a>
+									<?php if ( $this->settings['disable_counters'] != 1 ) : ?>
+										<span class="nss-site-count"><?php echo array_key_exists( 'stumbleupon', $this->share_numbers ) ? $this->share_numbers['stumbleupon'] : 0; ?></span>
+									<?php endif; ?>
+								</a>
 							</li>
 							<?php
 							break;
@@ -401,7 +438,23 @@ class Naked_Social_Share_Buttons {
 							<li class="nss-google">
 								<a href="https://plus.google.com/share?url=<?php echo get_permalink( $this->post ); ?>" target="_blank"><i class="fa fa-google-plus"></i>
 									<span class="nss-site-name"><?php _e( 'Google+', 'naked-social-share' ); ?></span>
-									<span class="nss-site-count"><?php echo array_key_exists( 'google', $this->share_numbers ) ? $this->share_numbers['google'] : 0; ?></span></a>
+									<?php if ( $this->settings['disable_counters'] != 1 ) : ?>
+										<span class="nss-site-count"><?php echo array_key_exists( 'google', $this->share_numbers ) ? $this->share_numbers['google'] : 0; ?></span>
+									<?php endif; ?>
+								</a>
+							</li>
+							<?php
+							break;
+
+						case 'linkedin' :
+							?>
+							<li class="nss-linkedin">
+								<a href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo urlencode( get_permalink( $this->post ) ); ?>&title=<?php echo $this->get_title(); ?>&source=<?php echo urlencode( get_bloginfo( 'name' ) ); ?>" target="_blank"><i class="fa fa-linkedin"></i>
+									<span class="nss-site-name"><?php _e( 'LinkedIn', 'naked-social-share' ); ?></span>
+									<?php if ( $this->settings['disable_counters'] != 1 ) : ?>
+										<span class="nss-site-count"><?php echo array_key_exists( 'linkedin', $this->share_numbers ) ? $this->share_numbers['linkedin'] : 0; ?></span>
+									<?php endif; ?>
+								</a>
 							</li>
 							<?php
 							break;
@@ -409,7 +462,7 @@ class Naked_Social_Share_Buttons {
 				} ?>
 			</ul>
 		</div>
-	<?php
+		<?php
 	}
 
 	/**
@@ -422,7 +475,10 @@ class Naked_Social_Share_Buttons {
 	 * @since  1.0.6
 	 * @return string
 	 */
-	public function get_title( $urlencode = true ) {
+	public
+	function get_title(
+		$urlencode = true
+	) {
 		$title_raw     = get_the_title( $this->post );
 		$title_decoded = html_entity_decode( $title_raw );
 

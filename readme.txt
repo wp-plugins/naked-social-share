@@ -3,7 +3,7 @@ Contributors: NoseGraze
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L2TL7ZBVUMG9C
 Tags: social, twitter, facebook, pinterest, stumbleupon, social share
 Requires at least: 3.0
-Tested up to: 4.2.3
+Tested up to: 4.2.4
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -51,6 +51,12 @@ The share counters are cached for 3 hours to improve loading times and to avoid 
 
 == Changelog ==
 
+= 1.2.0 =
+* Added LinkedIn button.
+* Tested with WordPress version 4.2.4.
+* New option to disable share counts.
+* Code tweaks to properly implement upgrade routines and version number logging.
+
 = 1.1.3 =
 * Fixed an incorrectly spelled slug.
 * Updated the settings panel (no visual changes).
@@ -90,5 +96,5 @@ The share counters are cached for 3 hours to improve loading times and to avoid 
 
 == Upgrade Notice ==
 
-= 1.1.3 =
-Minor code tweaks and tested with WordPress 4.2.3
+= 1.2.0 =
+Added LinkedIn button, option to disable counters, and tested with WP 4.2.4.
