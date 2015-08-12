@@ -213,7 +213,7 @@ class Nose_Graze_Settings {
 		ob_start();
 		?>
 		<div class="wrap">
-			<h1 class="page-title-action"><?php echo $this->page_title; ?></h1>
+			<h1><?php echo $this->page_title; ?></h1>
 
 			<h2 class="nav-tab-wrapper">
 				<?php
